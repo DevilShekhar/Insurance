@@ -7,7 +7,7 @@
           <div class="premium-page-head">
             <div class="premium-page-title">
               <span class="mini-badge">Insurance Control Center</span>
-              <h2>Vehicle Insurance Dashboard</h2>
+              <h2>Vehicle Insurance Dashboard one</h2>
               <p>Track policies, renewals, expiring records and recent uploads from one premium admin panel.</p>
             </div>
 
