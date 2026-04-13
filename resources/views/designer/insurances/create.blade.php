@@ -540,7 +540,11 @@
             </div>
         </form>
 
-        <!-- POPUP MODAL -->
+        
+
+    </div>
+</section>
+<!-- POPUP MODAL -->
         <div class="modal fade premium-upload-modal" id="excelUploadModal" tabindex="-1" role="dialog" aria-labelledby="excelUploadModalLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content premium-excel-modal">
@@ -589,8 +593,4 @@
                 </div>
               </div>
             </div>
-
-    </div>
-</section>
-
 @endsection
