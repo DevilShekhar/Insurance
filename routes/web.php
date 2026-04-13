@@ -21,10 +21,9 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('room_packs', RoomPackController::class);
     Route::resource('blogs', BlogController::class);
     Route::resource('users', UserController::class);
-      Route::resource('insurances', InsuranceController::class);
-       Route::get('expire-insurance', [InsuranceController::class, 'expire'])->name('expire-insurance');
-         Route::get('re-expire-insurance', [InsuranceController::class, 're_expire'])->name('re-expire-insurance');
-         Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-          Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::resource('insurances', InsuranceController::class);
+    Route::get('expire-insurance', [InsuranceController::class, 'expire'])->name('expire-insurance');
+    Route::get('re-expire-insurance', [InsuranceController::class, 're_expire'])->name('re-expire-insurance');
+        
     
 });
