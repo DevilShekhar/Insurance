@@ -49,19 +49,35 @@
             </div>
         </div>
 
+        {{-- PAGE TOP ALERTS --}}
         @if(session('success'))
-            <div class="alert alert-success">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
                 {{ session('success') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        @endif
+
+        @if(session('warning'))
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ session('warning') }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
         @if ($errors->any())
-            <div class="alert alert-danger">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <ul class="mb-0">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
                 </ul>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         @endif
 
@@ -84,7 +100,6 @@
                         </div>
 
                         <div class="customer-upload-action">
-                          
                             <button
                                 type="button"
                                 class="quick-action-box excel-popup-trigger"
@@ -540,57 +555,93 @@
             </div>
         </form>
 
-        
-
     </div>
 </section>
-<!-- POPUP MODAL -->
-        <div class="modal fade premium-upload-modal" id="excelUploadModal" tabindex="-1" role="dialog" aria-labelledby="excelUploadModalLabel" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                <div class="modal-content premium-excel-modal">
-                  <div class="modal-header premium-modal-header">
-                    <div>
-                      <h5 class="modal-title mb-1" id="excelUploadModalLabel">Upload Excel File</h5>
-                      <p class="modal-subtitle mb-0">Import insurance records from Excel or CSV file.</p>
-                    </div>
-                    <button type="button" class="close premium-close-btn" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
 
-                  <div class="modal-body premium-modal-body">
-                    <form id="excelUploadForm" enctype="multipart/form-data" novalidate>
-                      <label for="excelFileUpload" class="upload-drop-area premium-upload-surface mb-0">
+<!-- POPUP MODAL -->
+<div class="modal fade premium-upload-modal" id="excelUploadModal" tabindex="-1" role="dialog" aria-labelledby="excelUploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content premium-excel-modal">
+            <div class="modal-header premium-modal-header">
+                <div>
+                    <h5 class="modal-title mb-1" id="excelUploadModalLabel">Upload Excel File</h5>
+                    <p class="modal-subtitle mb-0">Import insurance records from Excel or CSV file.</p>
+                </div>
+                <button type="button" class="close premium-close-btn" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body premium-modal-body">
+                <form id="excelUploadForm" action="{{ route('insurances.import') }}" method="POST" enctype="multipart/form-data" novalidate>
+                    @csrf
+
+                    <label for="excelFileUpload" class="upload-drop-area premium-upload-surface mb-0">
                         <input
-                          type="file"
-                          id="excelFileUpload"
-                          name="excel_file"
-                          class="premium-file-input"
-                          accept=".xls,.xlsx,.csv"
-                          required
+                            type="file"
+                            id="excelFileUpload"
+                            name="excel_file"
+                            class="premium-file-input"
+                            accept=".xls,.xlsx,.csv"
+                            required
                         >
                         <span class="upload-icon-wrap">
-                          <i class="fas fa-file-excel"></i>
+                            <i class="fas fa-file-excel"></i>
                         </span>
                         <span class="d-block premium-upload-title mb-2">Select Excel File</span>
                         <span class="d-block premium-upload-text mb-2">Supported formats: .xls, .xlsx, .csv</span>
                         <span class="d-block premium-upload-file-name" id="excelFileName">Click to browse your file</span>
-                      </label>
+                    </label>
 
-                      <div class="sample-note mt-3">
+                    <div class="sample-note mt-3">
                         <small>
-                          Tip: Excel file should contain customer name, mobile number, vehicle number, policy number,
-                          insurance type, start date, end date.
+                            Tip: Excel file should contain customer name, mobile number, vehicle number, policy number,
+                            insurance type, start date, end date.
                         </small>
-                      </div>
+                    </div>
 
-                      <div class="premium-modal-actions mt-4">
+                    <div class="premium-modal-actions mt-4">
                         <button type="button" class="btn premium-cancel-btn" data-dismiss="modal">Cancel</button>
                         <button type="submit" class="btn premium-submit-btn">Submit</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
+                    </div>
+                </form>
             </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const claimHistory = document.getElementById('claimHistory');
+        const claimDetailsWrap = document.getElementById('claimDetailsWrap');
+        const excelFileUpload = document.getElementById('excelFileUpload');
+        const excelFileName = document.getElementById('excelFileName');
+
+        function toggleClaimDetails() {
+            if (!claimHistory || !claimDetailsWrap) return;
+
+            if (claimHistory.value === 'yes') {
+                claimDetailsWrap.classList.remove('d-none');
+            } else {
+                claimDetailsWrap.classList.add('d-none');
+            }
+        }
+
+        if (claimHistory) {
+            toggleClaimDetails();
+            claimHistory.addEventListener('change', toggleClaimDetails);
+        }
+
+        if (excelFileUpload && excelFileName) {
+            excelFileUpload.addEventListener('change', function () {
+                if (this.files && this.files.length > 0) {
+                    excelFileName.textContent = this.files[0].name;
+                } else {
+                    excelFileName.textContent = 'Click to browse your file';
+                }
+            });
+        }
+    });
+</script>
+
 @endsection
