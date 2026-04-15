@@ -55,7 +55,7 @@
                     <form action="{{ route('insurances.destroy', $insurance->id) }}" method="POST" style="display:inline-block;">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this insurance record?')">
+                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this record?')">
                             Delete
                         </button>
                     </form>

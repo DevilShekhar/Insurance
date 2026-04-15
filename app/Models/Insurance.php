@@ -12,7 +12,7 @@ class Insurance extends Model
         'assigned_agent',
         'stage',
         'status',
-
+        
         'full_name',
         'mobile_number',
         'email',
@@ -56,6 +56,5 @@ class Insurance extends Model
         'previous_policy_expiry_date',
         'claim_in_previous_policy',
         'break_in_case',
-        'claim_details',
     ];
 }

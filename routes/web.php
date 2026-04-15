@@ -15,7 +15,6 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', [DesignerDashboardController::class, 'index'])->name('dashboard');
     Route::resource('room_packs', RoomPackController::class);
@@ -24,6 +23,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('insurances', InsuranceController::class);
     Route::get('expire-insurance', [InsuranceController::class, 'expire'])->name('expire-insurance');
     Route::get('re-expire-insurance', [InsuranceController::class, 're_expire'])->name('re-expire-insurance');
-        
-    
+
+    Route::post('insurances/import', [InsuranceController::class, 'importExcel'])->name('insurances.import');
 });
